@@ -8,18 +8,20 @@ class Request {
     }
 }
 
-const TABLE_CELL_STYLE = "border border-gray-300";
+const MOEDA = "€";
+const TABLE_TR_STYLE = "bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200";
+const TABLE_TD_STYLE = "px-6 py-4";
 
 function calcular() {
     const request = new Request(
         parseFloat(document.getElementById("valorDoImovel").value),
-        parseFloat(document.getElementById("entrada").value),
+        parseFloat(document.getElementById("entrada").value / 100),
         parseFloat(document.getElementById("euribor").value / 100),
         parseFloat(document.getElementById("spread").value / 100),
         parseFloat(document.getElementById("termoEmAnos").value),
     );
     debugger;
-    const capitalEmprestado = request.valorDoImovel - request.entrada;
+    const capitalEmprestado = request.valorDoImovel - (request.entrada * request.valorDoImovel);
     const meses = request.termoEmAnos * 12;
     const taxaMensal = (request.euribor + request.spread) / 12;
 
@@ -36,12 +38,12 @@ function calcular() {
         saldoDevedor -= capital;
 
         tabela.innerHTML += `
-        <tr>
-            <td class="${TABLE_CELL_STYLE}">${i}</td>
-            <td class="${TABLE_CELL_STYLE}">${prestacaoMensal.toFixed(2)}</td>
-            <td class="${TABLE_CELL_STYLE}">${capital.toFixed(2)}</td>
-            <td class="${TABLE_CELL_STYLE}">${juros.toFixed(2)}</td>
-            <td class="${TABLE_CELL_STYLE}">${saldoDevedor > 0 ? saldoDevedor.toFixed(2) : "0.00"}</td>
+        <tr class="${TABLE_TR_STYLE}">
+            <td class="${TABLE_TD_STYLE}">${i}</td>
+            <td class="${TABLE_TD_STYLE}">${prestacaoMensal.toFixed(2)} ${MOEDA}</td>
+            <td class="${TABLE_TD_STYLE}">${capital.toFixed(2)} ${MOEDA}</td>
+            <td class="${TABLE_TD_STYLE}">${juros.toFixed(2)} ${MOEDA}</td>
+            <td class="${TABLE_TD_STYLE}">${saldoDevedor > 0 ? saldoDevedor.toFixed(2) : "0.00"} ${MOEDA}</td>
         </tr>
         `;
     }
